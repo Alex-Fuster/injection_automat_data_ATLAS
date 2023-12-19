@@ -13,6 +13,6 @@ Temporary repository to process the retrieved datasets from automated search alg
 
 **df_repository.xlsx** is the raw list and metadata of retrieved datasets. It contains the column "ID" indicating the ID for each dataset, which is used for naming the files in "retrieved_datasets" folder.
 
-Folder **retrieved_datasets** contains all the files for each dataset. Each file name contains the ID of its the dataset.
+Folder **retrieved_datasets** contains all the files for each dataset. Each file name contains the ID of its the dataset, followed by its original name.
 
 Folder **scripts** contains an script per dataset to process the data and produce the tables to inject in ATLAS, stored in the folder **ouptut_tables**.

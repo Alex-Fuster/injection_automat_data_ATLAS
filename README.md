@@ -2,9 +2,12 @@
 
 Temporary repository to process the retrieved datasets from automated search algorythms to inject them into the ATLAS database
 
-**Naming guide:**  ID_name_tablename
+**Naming guide:**  "ID_name_tablename"
+
 -> ID: ID given by column "ID" in **df_repository.xlsx**.
+
 -> name: name given by us to the dataset (e.g. Leblond2013)
+
 -> tablename: name of the table in ATLAS that the data refers to (e.g. taxa_obs)
 
 

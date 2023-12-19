@@ -1,0 +1,32 @@
+#command:
+R script for the cluster analysis and the random forest analysis
+
+#estipop_rfh/rgh:
+Rivière-George herd (rfh) and Rivière-aux-Feuilles herd (rgh) population time series used in the 1000 runs of the random forest analysis
+
+#WRcentro.txt:
+locations of the centroid of the individual winter break with their assigned cluster
+- idanimal: caribou ID
+- herd: 1 -> Rivière-George herd; 2 -> Rivière-aux-Feuilles herd
+- year
+- bwin: beginning date of the winter range use
+- ewin: ending date of the winter range use
+- x/y: coordinates of the mean winter location (NAD83 Quebec Lambert, WKID: EPSG 32198)
+- cluster: cluster assigned to the centroid after running the cluster analysis
+cluster analysis was performed on rgh and rfh separately
+
+#db_rf.txt:
+database used for the random forest analysis
+- ind: individual number
+- idanimal: caribou ID
+- herd: 1 -> Rivière-George herd; 2 -> Rivière-aux-Feuilles herd
+- year
+- cluster
+- st_sep/oct: mean temperatures encountered in September/October
+- swe_sep/oct: mean snow water equivalent encountered in September/October
+- pcp_sep/oct: mean precipitations encountered in September/October
+- ndvi_jul/aug/sep/oct: mean NDVI of July/August/September/October
+
+#output files of the RF:
+- tabimp_rfh/rgh: variable importance calculated for each RF (n=1000) for the different classes (not used) and the global model (used in the study). Ranks were added using Excel. 
+- taberr_rfh/rgh: classification error rate for the classes and the global model

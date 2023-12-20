@@ -1,4 +1,3 @@
-Reduced fitness of Atlantic salmon released in the wild after one generation of captive-breeding.nEmmanuel MILOT, Charles PERRIER, Lucie PAPILLON, Julian J. DODSON, Louis BERNATCHEZ. In the following order: spawners 2002, fry 2003, spawners 2003, fry 2004, spawners 2004, fry 2005, Tadoussac hatchery breeders									
 SSMB2001	,	175179	125213	162224	330362	307315	174206	325373	194198
 SSMB2002	,	163163	225249	166270	314334	323327	170192	313313	198202
 SSMB2003	,	167167	213213	218224	314338	311319	158204	285377	198202

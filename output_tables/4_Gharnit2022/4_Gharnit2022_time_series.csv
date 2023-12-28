@@ -1,2 +1,2 @@
 "taxon","years","values","unit","geom"
-"Tamias striatus","2012, 2013, 2014, 2015, 2016, 2017","56, 123, 131, 62, 126, 54","Number of individuals captured in trapping transects each year","MULTIPOINT ((45.05 -72.25))"
+"Tachycineta bicolor","1, 2, 3, 4, 5, 6, 7","266, 268, 234, 224, 197, 151, 143","Number of hatchlings recorded in nest-boxes visited every 2 days throughout the breeding season (April to August)","MULTIPOINT ((45.3 -72.5))"

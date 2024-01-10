@@ -75,7 +75,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Dicrostonyx groenlandicus", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/65_Beardsell2022/65_Beardsell2022_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "output_tables/65_Beardsell2022/65_Beardsell2022_1_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -112,4 +112,4 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/65_Beardsell2022/65_Beardsell2022_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "output_tables/65_Beardsell2022/65_Beardsell2022_1_time_series.csv", row.names = FALSE)

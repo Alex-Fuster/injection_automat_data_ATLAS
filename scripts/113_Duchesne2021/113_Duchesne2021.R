@@ -1,63 +1,60 @@
 ###########################################################################
-# Injection of Tachycineta bicolor females time-series into ATLAS
-# From 2005 to 2011, bird data provided by Bourret et al. 2015
-# Collected at southern Québec, Canada (45.30N, 72.50W)
+# Injection of lemmings time-series into ATLAS
+# From 2010 to 2019, micro-mammal data provided by Duchesne et al. 2021
+# Collected at Qarlikturvik valley on Bylot Island (73°08′ N; 80°00′ W)
 #
 # December 2023
 # Alexandre Fuster
 ###########################################################################
 
 ###################### NOTES ##############################################
-# - # - Type échantillonnage: monitoring nest-boxes
-# - Effort d'échantillonnage: From 2005 to 2011, 400 nest-boxes distributed among 40 farms (10 per farm) over an area of approximately 10 200 km2 were visited every 2 days throughout the breeding season (April to August).
+# - Type échantillonnage: Trapping stations
+# - Effort d'échantillonnage: live-trapping sessions in two 11-ha trapping grids (one in mesic and one in wetland habitats)
 ###########################################################################
 
-file_name <- "retrieved_datasets/58/58_DeterminantPOP.csv"
+file_name <- "retrieved_datasets/113/113_occurrence_nestingbirds.csv"
 
-brut <- read.csv(file_name, sep=";")
+brut <- read.csv(file_name, sep=",")
 
 
-# the measure is density: % occupied nest boxes
+# The measure is Annual lemming density (nb lemmings / ha) estimated with capture-recapture. For details of the method, see Fauteux et al. 2015.
 
-# We compute a time-series for each farm
 
-brut$Year <- as.character(brut$YEAR)
+brut$year <- as.character(brut$year)
 
 
 data_timeseries <- brut |>
   #dplyr::select(c("Year", "nuits-piège", "nbr.peinte", "nbr.serpentine")) |>
   #dplyr::mutate(`Chrysemys picta` = ifelse(nbr.peinte > 0, nbr.peinte/`nuits-piège`, NA),
   # `Chelydra serpentina` = ifelse(nbr.serpentine > 0, nbr.serpentine/`nuits-piège`, nbr.serpentine)) |>
-  dplyr::select(c("YEAR", "DENSITY"))  |>
-  dplyr::group_by(YEAR) |>
-  dplyr::summarize(DENSITY = sum(DENSITY))
+  dplyr::select(c("year", "lemmings"))  |>
+  dplyr::group_by(year) |>
+  dplyr::summarize(DENSITY = sum(lemmings))
 
 
 
-# 45°05’N; 72°25’W
-geom <- data.frame(x = brut$LAT[1], y = brut$LONG[1]) # I just take the coordinates of one of the farms. We might want to take the centroid [!]
+#73°08′ N; 80°00′ W
+geom <- data.frame(x = 73.08, y = 80.00) 
 
 dataset <- data.frame(
-  original_source = "Bourret et al. 2015",
+  original_source = "Duchesne et al. 2021",
   # org_dataset_id
-  creator = "Bourret et al. 2015",
-  title = "Multidimensional environmental influences on timing of breeding in a tree swallow population facing climate change",
+  creator = "Duchesne et al. 2021",
+  title = "Variable strength of predator-mediated effects on species occurrence in an arctic terrestrial vertebrate community",
   publisher = "WILEY",
   #keywords = c("Tortues, "Série-temporelle"),
-  type_sampling = "Nest-boxes",
+  type_sampling = "live-trapping stations",
   type_obs = "human observation",
   # intellectual_rights
   license = "CC0 1.0 Universal",
   #owner = ,
-  methods = "From 2005 to 2011, 400 nest-boxes distributed among 40 farms 
-(10 per farm) over an area of approximately 10 200 km2 were 
-visited every 2 days throughout the breeding season (April to August)",
-  open_data = TRUE,
-  exhaustive = TRUE,
-  direct_obs = TRUE,
-  centroid = FALSE,
-  doi = "https://doi.org/10.5061/dryad.87jb3",
-  citation = "Bourret, Audrey; Bélisle, Marc; Pelletier, Fanie; Garant, Dany (2015). Data from: Multidimensional environmental influences on timing of breeding in a tree swallow population facing climate change [Dataset]. Dryad."
+  methods = "Lemming density was estimated from 2010 to 2019 with live-trapping sessions in two 11-ha trapping grids (one in mesic and one in wetland habitats). ",
+open_data = TRUE,
+exhaustive = TRUE,
+direct_obs = TRUE,
+centroid = FALSE,
+doi = " https://doi.org/10.5061/dryad.pg4f4qrpf",
+citation = "Duchesne, Éliane et al. (2021). Variable strength of predator-mediated effects on species occurrence in an arctic terrestrial vertebrate community [Dataset]. Dryad"
 )
 
 
@@ -76,22 +73,25 @@ visited every 2 days throughout the breeding season (April to August)",
 
 taxa_obs <- data.frame(scientific_name = character(), rank = character())
 
+
 # Add a new row
 taxa_obs <- taxa_obs |>
-  dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
+  dplyr::add_row(scientific_name = "Lemmus trimucronatus", rank = "species") |>
+  dplyr::add_row(scientific_name = "Dicrostonyx groenlandicus", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/58_Bourret2015/58_Bourret2015_taxa_obs.csv", row.names = FALSE)
+
+write.csv(taxa_obs, file = "output_tables/113_Duchesne2021/113_Duchesne2021_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
 #--------------------------------------------------------------------------
 # Format data for time series as a list of data frames
 time_series <- data_timeseries |>
-  dplyr::mutate(taxon = "Tachycineta bicolor") |>
+  dplyr::mutate(taxon = "Lemmings") |>
   dplyr::mutate(taxon = stringr::str_to_sentence(taxon)) |>
-  dplyr::rename(years = "YEAR") |>
-  dplyr::mutate(unit = "% of occupied nest-boxes - visited every 2 days throughout the breeding season (April to August)")
+  dplyr::rename(years = "year") |>
+  dplyr::mutate(unit = "Annual lemming density (nb lemmings / ha) estimated with capture-recapture")
 
 # Add geoms
 time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as.matrix(geom))), nrow(time_series)))
@@ -118,4 +118,4 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/58_Bourret2015/58_Bourret2015_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "output_tables/113_Duchesne2021/113_Duchesne2021_time_series.csv", row.names = FALSE)

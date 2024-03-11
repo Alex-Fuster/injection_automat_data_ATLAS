@@ -1,58 +1,63 @@
 ###########################################################################
-# Injection of Rangifer tarandus time-series into Atlas
-# From 1999 to 2011 mammals data provided by Leblond et al. 2013
-# Laurentides Wildlife Reserve ( 47°45′00″N ; 71°15′00″W) and Grands-Jardins National Park of Québec (47°41′N 70°51′W)
+# Injection of diptera time-series into ATLAS
+# From 2006 to 2016, insect data provided by Garrett 2022
+# Collected at southern Québec, Canada (45.30N, 72.50W)
 #
 # December 2023
 # Alexandre Fuster
 ###########################################################################
 
 ###################### NOTES ##############################################
-# - Type échantillonnage: VHF telemetry from 1999-2000, and GPS telemetry from 2004-2011
-# - Effort d'échantillonnage:  1 year VHF telemetry or 8 years GPS data for each individual
+# - # - Type échantillonnage: insect traps
+# - Effort d'échantillonnage: From 2005 to 2011, two insect traps were placed among 40 farms (N = 80) over an area of approximately 10 200 km2. Traps were spaced at least 250 m apart along the central portion of Tachycineta bicolor nest box transects. Each year, the content of traps was collected every two days throughout each breeding season (April to August)
 ###########################################################################
 
-file_name <- "retrieved_datasets/11/11_Table_Data.xlsx"
+file_name <- "../retrieved_datasets/timeseries/150/150_Diptera.csv"
 
-brut <- readxl::read_excel(file_name)
+brut <- read.csv(file_name, sep=",")
 
-# Normalized per 1 ----------------------- !
+
+# the measure is insect biomass
+
+# We compute a time-series for each farm
 
 brut$Year <- as.character(brut$Year)
+
 
 data_timeseries <- brut |>
   #dplyr::select(c("Year", "nuits-piège", "nbr.peinte", "nbr.serpentine")) |>
   #dplyr::mutate(`Chrysemys picta` = ifelse(nbr.peinte > 0, nbr.peinte/`nuits-piège`, NA),
   # `Chelydra serpentina` = ifelse(nbr.serpentine > 0, nbr.serpentine/`nuits-piège`, nbr.serpentine)) |>
-  dplyr::select(c("Year", "Individual")) |>
+  dplyr::select(c("Year", "Biomass"))  |>
   dplyr::group_by(Year) |>
-  dplyr::summarise(count = dplyr::n())
+  dplyr::summarize(Biomass = sum(Biomass))
 
 
 
-
-geom <- data.frame(x = 47.4500, y = -71.1500) # only at Laurentides Wildlife Reserve 
+# 45.30N, 72.50W
+geom <- data.frame(x = 45.30, y = 72.50) # I just take the coordinates of one of the farms. We might want to take the centroid [!]
 
 dataset <- data.frame(
-  original_source = "Leblond et al. 2013",
+  original_source = "Garrett 2022",
   # org_dataset_id
-  creator = "Leblond et al. 2013",
-  title = "Impacts of human disturbance on large prey species: do behavioral reactions translate to fitness consequences?",
-  publisher = "PLOS",
+  creator = "Garrett 2022",
+  title = "Data set for combined influence of food availability and agricultural intensification on a declining aerial insectivore",
+  publisher = " Ecological Society of America (ESA)",
   #keywords = c("Tortues, "Série-temporelle"),
-  type_sampling = "VHF telemetry, GPS",
-  type_obs = "Telemetry",
+  type_sampling = " Insect traps and window/water-pan flight trap",
+  type_obs = "human observation",
   # intellectual_rights
   license = "CC0 1.0 Universal",
   #owner = ,
-  methods = "For 8 consecutive years, 59 individuals were monitored using GPS telemetry, and 28 for 1 year using Very High Frequency telemtry",
+  methods = "From 2005 to 2011, two insect traps were placed among 40 farms (N = 80) over an area of approximately 10 200 km2. Traps were spaced at least 250 m apart along the central portion of Tachycineta bicolor nest box transects. Each year, the content of traps was collected every two days throughout each breeding season (April to August)",
   open_data = TRUE,
   exhaustive = TRUE,
   direct_obs = TRUE,
   centroid = FALSE,
-  doi = "https://doi.org/10.5061/dryad.1cc4v",
-  citation = "Leblond, Mathieu; Dussault, Christian; Ouellet, Jean-Pierre (2013). Data from: Impacts of human disturbance on large prey species: do behavioral reactions translate to fitness consequences? [Dataset]. Dryad"
+  doi = "https://doi.org/10.5061/dryad.xd2547dj8",
+  citation = "Garrett, Daniel (2022). Data set for combined influence of food availability and agricultural intensification on a declining aerial insectivore [Dataset]. Dryad."
 )
+
 
 
 
@@ -71,20 +76,20 @@ taxa_obs <- data.frame(scientific_name = character(), rank = character())
 
 # Add a new row
 taxa_obs <- taxa_obs |>
-  dplyr::add_row(scientific_name = "Rangifer tarandus", rank = "species") |>
+  dplyr::add_row(scientific_name = "Diptera", rank = "order") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/11_Leblond2013/11_Leblond2013_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/150_Garrett2022/150_Garrett2022_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
 #--------------------------------------------------------------------------
 # Format data for time series as a list of data frames
 time_series <- data_timeseries |>
-  dplyr::mutate(taxon = "Rangifer tarandus") |>
+  dplyr::mutate(taxon = "Diptera") |>
   dplyr::mutate(taxon = stringr::str_to_sentence(taxon)) |>
   dplyr::rename(years = "Year") |>
-  dplyr::mutate(unit = "Individual transmitting GPS signal")
+  dplyr::mutate(unit = "Biomass of trapped diptera")
 
 # Add geoms
 time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as.matrix(geom))), nrow(time_series)))
@@ -104,11 +109,11 @@ time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as
 
 time_series <- time_series |>
   dplyr::group_by(geom, taxon, unit) |>
-  dplyr::rename(values = "count") |>
+  dplyr::rename(values = "Biomass") |>
   dplyr::summarise(
     years = toString(years),
     values = toString(values)) |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/11_Leblond2013/11_Leblond2013_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/150_Garrett2022/150_Garrett2022_time_series.csv", row.names = FALSE)

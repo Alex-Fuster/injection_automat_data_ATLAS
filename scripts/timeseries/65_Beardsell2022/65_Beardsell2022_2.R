@@ -1,61 +1,56 @@
 ###########################################################################
-# Injection of diptera time-series into ATLAS
-# From 2006 to 2016, insect data provided by Garrett 2022
-# Collected at southern Québec, Canada (45.30N, 72.50W)
+# Injection of Passerine time-series into Atlas
+# From 2005 to 2019 birds data provided by Beardsell et al. 2022
+# Collected at Sirmilik National Park, Bylot Island (73° N; 80° W)
 #
 # December 2023
 # Alexandre Fuster
 ###########################################################################
 
 ###################### NOTES ##############################################
-# - # - Type échantillonnage: insect traps
-# - Effort d'échantillonnage: From 2005 to 2011, two insect traps were placed among 40 farms (N = 80) over an area of approximately 10 200 km2. Traps were spaced at least 250 m apart along the central portion of Tachycineta bicolor nest box transects. Each year, the content of traps was collected every two days throughout each breeding season (April to August)
-###########################################################################
+# - Type échantillonnage: 
+# - Effort d'échantillonnage: 
 
-file_name <- "retrieved_datasets/150/150_Diptera.csv"
+# units are nest density: nest/km2
+
+
+file_name <- "../retrieved_datasets/timeseries/65/65_LPS_Densities_NestingSuccess.csv"
 
 brut <- read.csv(file_name, sep=",")
 
 
-# the measure is insect biomass
-
-# We compute a time-series for each farm
-
 brut$Year <- as.character(brut$Year)
-
 
 data_timeseries <- brut |>
   #dplyr::select(c("Year", "nuits-piège", "nbr.peinte", "nbr.serpentine")) |>
   #dplyr::mutate(`Chrysemys picta` = ifelse(nbr.peinte > 0, nbr.peinte/`nuits-piège`, NA),
   # `Chelydra serpentina` = ifelse(nbr.serpentine > 0, nbr.serpentine/`nuits-piège`, nbr.serpentine)) |>
-  dplyr::select(c("Year", "Biomass"))  |>
-  dplyr::group_by(Year) |>
-  dplyr::summarize(Biomass = sum(Biomass))
+  dplyr::select(c("Year", "Passerine_nestdensity")) 
 
 
 
-# 45.30N, 72.50W
-geom <- data.frame(x = 45.30, y = 72.50) # I just take the coordinates of one of the farms. We might want to take the centroid [!]
+# 45°05’N; 72°25’W
+geom <- data.frame(x = 73, y = 80)
 
 dataset <- data.frame(
-  original_source = "Garrett 2022",
+  original_source = "Beardsell et al. 2022",
   # org_dataset_id
-  creator = "Garrett 2022",
-  title = "Data set for combined influence of food availability and agricultural intensification on a declining aerial insectivore",
-  publisher = " Ecological Society of America (ESA)",
+  creator = "Beardsell et al. 2022",
+  title = "A mechanistic model of functional response provides new insights into indirect interactions among arctic tundra prey",
+  publisher = "Ecological Society of America",
   #keywords = c("Tortues, "Série-temporelle"),
-  type_sampling = " Insect traps and window/water-pan flight trap",
-  type_obs = "human observation",
+  type_sampling = "",
+  type_obs = "",
   # intellectual_rights
   license = "CC0 1.0 Universal",
   #owner = ,
-  methods = "From 2005 to 2011, two insect traps were placed among 40 farms (N = 80) over an area of approximately 10 200 km2. Traps were spaced at least 250 m apart along the central portion of Tachycineta bicolor nest box transects. Each year, the content of traps was collected every two days throughout each breeding season (April to August)",
+  methods = "",
   open_data = TRUE,
   exhaustive = TRUE,
   direct_obs = TRUE,
   centroid = FALSE,
-  doi = "https://doi.org/10.5061/dryad.xd2547dj8",
-  citation = "Garrett, Daniel (2022). Data set for combined influence of food availability and agricultural intensification on a declining aerial insectivore [Dataset]. Dryad."
+  doi = "https://doi.org/10.5061/dryad.8w9ghx3pf",
+  citation = "Beardsell, Andréanne et al. (2022). A mechanistic model of functional response provides new insights into indirect interactions among arctic tundra prey [Dataset]. Dryad"
 )
 
 
@@ -76,20 +71,19 @@ taxa_obs <- data.frame(scientific_name = character(), rank = character())
 
 # Add a new row
 taxa_obs <- taxa_obs |>
-  dplyr::add_row(scientific_name = "Diptera", rank = "order") |>
-  dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
+  dplyr::add_row(scientific_name = "Passeriformes", rank = "order")
 
-write.csv(taxa_obs, file = "output_tables/150_Garrett2022/150_Garrett2022_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/65_Beardsell2022/65_Beardsell2022_2_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
 #--------------------------------------------------------------------------
 # Format data for time series as a list of data frames
 time_series <- data_timeseries |>
-  dplyr::mutate(taxon = "Diptera") |>
+  dplyr::mutate(taxon = "Passeriformes") |>
   dplyr::mutate(taxon = stringr::str_to_sentence(taxon)) |>
   dplyr::rename(years = "Year") |>
-  dplyr::mutate(unit = "Biomass of trapped diptera")
+  dplyr::mutate(unit = "nests per km2")
 
 # Add geoms
 time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as.matrix(geom))), nrow(time_series)))
@@ -109,11 +103,11 @@ time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as
 
 time_series <- time_series |>
   dplyr::group_by(geom, taxon, unit) |>
-  dplyr::rename(values = "Biomass") |>
+  dplyr::rename(values = "Passerine_nestdensity") |>
   dplyr::summarise(
     years = toString(years),
     values = toString(values)) |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/150_Garrett2022/150_Garrett2022_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/65_Beardsell2022/65_Beardsell2022_2_time_series.csv", row.names = FALSE)

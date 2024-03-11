@@ -18,7 +18,7 @@
 
 # Time series only for fledglings
 
-file_name <- "retrieved_datasets/101/101_Local_recruit_brood.csv"
+file_name <- "../retrieved_datasets/timeseries/101/101_Local_recruit_brood.csv"
 
 brut <- read.csv(file_name, sep=";")
 
@@ -90,7 +90,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/101_Carle-Pruneau2021/101_Carle-Pruneau2021_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/101_Carle-Pruneau2021/101_Carle-Pruneau2021_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -127,7 +127,7 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/101_Carle-Pruneau2021/101_Carle-Pruneau2021_time_series_1.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/101_Carle-Pruneau2021/101_Carle-Pruneau2021_time_series_1.csv", row.names = FALSE)
 
 
 
@@ -195,7 +195,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/101_Carle-Pruneau2021/101_Carle-Pruneau2021_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/101_Carle-Pruneau2021/101_Carle-Pruneau2021_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -232,4 +232,4 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/101_Carle-Pruneau2021/101_Carle-Pruneau2021_time_series_2.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/101_Carle-Pruneau2021/101_Carle-Pruneau2021_time_series_2.csv", row.names = FALSE)

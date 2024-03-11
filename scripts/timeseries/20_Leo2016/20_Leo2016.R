@@ -12,7 +12,7 @@
 # - Effort d'échantillonnage: summer months of July and August.
 ###########################################################################
 
-file_name <- "retrieved_datasets/20/20_FINAL_Leo et al_JH_Electronic Supplementary Material 2.xlsx"
+file_name <- "../retrieved_datasets/timeseries/20/20_FINAL_Leo et al_JH_Electronic Supplementary Material 2.xlsx"
 
 brut <- readxl::read_excel(file_name)
 
@@ -102,8 +102,8 @@ dataset_1 <- results_1[[1]]
 taxa_obs <- results_1[[2]]
 time_series_1 <- results_1[[3]]
 
-write.csv(taxa_obs_1, file = "output_tables/20_Leo2016/20_Leo2016_taxa_obs.csv", row.names = FALSE)
-write.csv(time_series_1, file = "output_tables/20_Leo2016/20_Leo2016_time_series1.csv", row.names = FALSE)
+write.csv(taxa_obs_1, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_taxa_obs.csv", row.names = FALSE)
+write.csv(time_series_1, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series1.csv", row.names = FALSE)
 
 
 
@@ -116,7 +116,7 @@ results_2 <- generate_timeseries_tables(data = brut_2, long = brut_2$Latitude, l
 dataset_2 <- results_2[[1]]
 time_series_2 <- results_2[[3]]
 
-write.csv(time_series_2, file = "output_tables/20_Leo2016/20_Leo2016_time_series2.csv", row.names = FALSE)
+write.csv(time_series_2, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series2.csv", row.names = FALSE)
 
 
 
@@ -130,7 +130,7 @@ dataset_3 <- results_3[[1]]
 time_series_3 <- results_3[[3]]
 
 
-write.csv(time_series_3, file = "output_tables/20_Leo2016/20_Leo2016_time_series3.csv", row.names = FALSE)
+write.csv(time_series_3, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series3.csv", row.names = FALSE)
 
 
 # --------- Run for the site HV
@@ -143,7 +143,7 @@ dataset_4 <- results_4[[1]]
 time_series_4 <- results_4[[3]]
 
 
-write.csv(time_series_4, file = "output_tables/20_Leo2016/20_Leo2016_time_series4.csv", row.names = FALSE)
+write.csv(time_series_4, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series4.csv", row.names = FALSE)
 
 
 # --------- Run for the site LP
@@ -155,7 +155,7 @@ results_5 <- generate_timeseries_tables(data = brut_5, long = brut_5$Latitude, l
 dataset_5 <- results_5[[1]]
 time_series_5 <- results_5[[3]]
 
-write.csv(time_series_5, file = "output_tables/20_Leo2016/20_Leo2016_time_series5.csv", row.names = FALSE)
+write.csv(time_series_5, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series5.csv", row.names = FALSE)
 
 
 # --------- Run for the site LS
@@ -168,7 +168,7 @@ dataset_6 <- results_6[[1]]
 time_series_6 <- results_6[[3]]
 
 
-write.csv(time_series_6, file = "output_tables/20_Leo2016/20_Leo2016_time_series6.csv", row.names = FALSE)
+write.csv(time_series_6, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series6.csv", row.names = FALSE)
 
 
 
@@ -182,7 +182,7 @@ results_7 <- generate_timeseries_tables(data = brut_7, long = brut_7$Latitude, l
 dataset_7 <- results_7[[1]]
 time_series_7 <- results_7[[3]]
 
-write.csv(time_series_7, file = "output_tables/20_Leo2016/20_Leo2016_time_series7.csv", row.names = FALSE)
+write.csv(time_series_7, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series7.csv", row.names = FALSE)
 
 
 
@@ -195,7 +195,7 @@ results_8 <- generate_timeseries_tables(data = brut_8, long = brut_8$Latitude, l
 dataset_8 <- results_8[[1]]
 time_series_8 <- results_8[[3]]
 
-write.csv(time_series_8, file = "output_tables/20_Leo2016/20_Leo2016_time_series8.csv", row.names = FALSE)
+write.csv(time_series_8, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series8.csv", row.names = FALSE)
 
 
 
@@ -208,7 +208,7 @@ results_9 <- generate_timeseries_tables(data = brut_9, long = brut_9$Latitude, l
 dataset_9 <- results_9[[1]]
 time_series_9 <- results_9[[3]]
 
-write.csv(time_series_9, file = "output_tables/20_Leo2016/20_Leo2016_time_series9.csv", row.names = FALSE)
+write.csv(time_series_9, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series9.csv", row.names = FALSE)
 
 
 
@@ -222,7 +222,7 @@ dataset_10 <- results_10[[1]]
 time_series_10 <- results_10[[3]]
 
 
-write.csv(time_series_10, file = "output_tables/20_Leo2016/20_Leo2016_time_series10.csv", row.names = FALSE)
+write.csv(time_series_10, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series10.csv", row.names = FALSE)
 
 
 
@@ -236,7 +236,7 @@ dataset_11 <- results_11[[1]]
 time_series_11 <- results_11[[3]]
 
 
-write.csv(time_series_11, file = "output_tables/20_Leo2016/20_Leo2016_time_series11.csv", row.names = FALSE)
+write.csv(time_series_11, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series11.csv", row.names = FALSE)
 
 
 
@@ -249,7 +249,7 @@ results_12 <- generate_timeseries_tables(data = brut_12, long = brut_12$Latitude
 dataset_12 <- results_12[[1]]
 time_series_12 <- results_12[[3]]
 
-write.csv(time_series_12, file = "output_tables/20_Leo2016/20_Leo2016_time_series12.csv", row.names = FALSE)
+write.csv(time_series_12, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series12.csv", row.names = FALSE)
 
 
 
@@ -263,5 +263,5 @@ dataset_13 <- results_13[[1]]
 time_series_13 <- results_13[[3]]
 
 
-write.csv(time_series_13, file = "output_tables/20_Leo2016/20_Leo2016_time_series13.csv", row.names = FALSE)
+write.csv(time_series_13, file = "../output_tables/timeseries/20_Leo2016/20_Leo2016_time_series13.csv", row.names = FALSE)
 

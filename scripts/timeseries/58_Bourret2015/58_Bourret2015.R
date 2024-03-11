@@ -1,56 +1,63 @@
 ###########################################################################
-# Injection of Lemming time-series into Atlas
-# From 2005 to 2019 micro-mammals data provided by Beardsell et al. 2022
-# Collected at Sirmilik National Park, Bylot Island (73° N; 80° W)
+# Injection of Tachycineta bicolor females time-series into ATLAS
+# From 2005 to 2011, bird data provided by Bourret et al. 2015
+# Collected at southern Québec, Canada (45.30N, 72.50W)
 #
 # December 2023
 # Alexandre Fuster
 ###########################################################################
 
 ###################### NOTES ##############################################
-# - Type échantillonnage: 
-# - Effort d'échantillonnage: 
+# - # - Type échantillonnage: monitoring nest-boxes
+# - Effort d'échantillonnage: From 2005 to 2011, 400 nest-boxes distributed among 40 farms (10 per farm) over an area of approximately 10 200 km2 were visited every 2 days throughout the breeding season (April to August).
+###########################################################################
 
-# units are Lemming density: ind/km2
+file_name <- "../retrieved_datasets/timeseries/58/58_DeterminantPOP.csv"
 
-
-file_name <- "retrieved_datasets/65/65_LPS_Densities_NestingSuccess.csv"
-
-brut <- read.csv(file_name, sep=",")
+brut <- read.csv(file_name, sep=";")
 
 
-brut$Year <- as.character(brut$Year)
+# the measure is density: % occupied nest boxes
+
+# We compute a time-series for each farm
+
+brut$Year <- as.character(brut$YEAR)
+
 
 data_timeseries <- brut |>
   #dplyr::select(c("Year", "nuits-piège", "nbr.peinte", "nbr.serpentine")) |>
   #dplyr::mutate(`Chrysemys picta` = ifelse(nbr.peinte > 0, nbr.peinte/`nuits-piège`, NA),
   # `Chelydra serpentina` = ifelse(nbr.serpentine > 0, nbr.serpentine/`nuits-piège`, nbr.serpentine)) |>
-  dplyr::select(c("Year", "Lemming_density")) 
+  dplyr::select(c("YEAR", "DENSITY"))  |>
+  dplyr::group_by(YEAR) |>
+  dplyr::summarize(DENSITY = sum(DENSITY))
 
 
 
 # 45°05’N; 72°25’W
-geom <- data.frame(x = 73, y = 80)
+geom <- data.frame(x = brut$LAT[1], y = brut$LONG[1]) # I just take the coordinates of one of the farms. We might want to take the centroid [!]
 
 dataset <- data.frame(
-  original_source = "Beardsell et al. 2022",
+  original_source = "Bourret et al. 2015",
   # org_dataset_id
-  creator = "Beardsell et al. 2022",
-  title = "A mechanistic model of functional response provides new insights into indirect interactions among arctic tundra prey",
-  publisher = "Ecological Society of America",
+  creator = "Bourret et al. 2015",
+  title = "Multidimensional environmental influences on timing of breeding in a tree swallow population facing climate change",
+  publisher = "WILEY",
   #keywords = c("Tortues, "Série-temporelle"),
-  type_sampling = "",
-  type_obs = "",
+  type_sampling = "Nest-boxes",
+  type_obs = "human observation",
   # intellectual_rights
   license = "CC0 1.0 Universal",
   #owner = ,
-  methods = "",
+  methods = "From 2005 to 2011, 400 nest-boxes distributed among 40 farms 
+(10 per farm) over an area of approximately 10 200 km2 were 
+visited every 2 days throughout the breeding season (April to August)",
   open_data = TRUE,
   exhaustive = TRUE,
   direct_obs = TRUE,
   centroid = FALSE,
-  doi = "https://doi.org/10.5061/dryad.8w9ghx3pf",
-  citation = "Beardsell, Andréanne et al. (2022). A mechanistic model of functional response provides new insights into indirect interactions among arctic tundra prey [Dataset]. Dryad"
+  doi = "https://doi.org/10.5061/dryad.87jb3",
+  citation = "Bourret, Audrey; Bélisle, Marc; Pelletier, Fanie; Garant, Dany (2015). Data from: Multidimensional environmental influences on timing of breeding in a tree swallow population facing climate change [Dataset]. Dryad."
 )
 
 
@@ -71,21 +78,20 @@ taxa_obs <- data.frame(scientific_name = character(), rank = character())
 
 # Add a new row
 taxa_obs <- taxa_obs |>
-  dplyr::add_row(scientific_name = "Lemmus trimucronatus", rank = "species") |>
-  dplyr::add_row(scientific_name = "Dicrostonyx groenlandicus", rank = "species") |>
+  dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/65_Beardsell2022/65_Beardsell2022_1_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/58_Bourret2015/58_Bourret2015_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
 #--------------------------------------------------------------------------
 # Format data for time series as a list of data frames
 time_series <- data_timeseries |>
-  dplyr::mutate(taxon = "Lemmings") |>
+  dplyr::mutate(taxon = "Tachycineta bicolor") |>
   dplyr::mutate(taxon = stringr::str_to_sentence(taxon)) |>
-  dplyr::rename(years = "Year") |>
-  dplyr::mutate(unit = "individuals per km2")
+  dplyr::rename(years = "YEAR") |>
+  dplyr::mutate(unit = "% of occupied nest-boxes - visited every 2 days throughout the breeding season (April to August)")
 
 # Add geoms
 time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as.matrix(geom))), nrow(time_series)))
@@ -105,11 +111,11 @@ time_series <- cbind(time_series, geom = rep(sf::st_as_text(sf::st_multipoint(as
 
 time_series <- time_series |>
   dplyr::group_by(geom, taxon, unit) |>
-  dplyr::rename(values = "Lemming_density") |>
+  dplyr::rename(values = "DENSITY") |>
   dplyr::summarise(
     years = toString(years),
     values = toString(values)) |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/65_Beardsell2022/65_Beardsell2022_1_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/58_Bourret2015/58_Bourret2015_time_series.csv", row.names = FALSE)

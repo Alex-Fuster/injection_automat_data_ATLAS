@@ -16,7 +16,7 @@
 ###########################################################################
 
 
-file_name <- "retrieved_datasets/41/41_clutchdata.xls"
+file_name <- "../retrieved_datasets/timeseries/41/41_clutchdata.xls"
 
 brut <- read_excel(file_name, skip = 13)
 
@@ -103,7 +103,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -142,7 +142,7 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_1_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_1_time_series.csv", row.names = FALSE)
 
 
 
@@ -212,7 +212,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -251,7 +251,7 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_2_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_2_time_series.csv", row.names = FALSE)
 
 
 
@@ -322,7 +322,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -361,7 +361,7 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_3_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_3_time_series.csv", row.names = FALSE)
 
 
 
@@ -433,7 +433,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Tachycineta bicolor", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_1_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -472,4 +472,4 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/41_RiouxPaquette2014/41_RiouxPaquette2014_4_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/41_RiouxPaquette2014/41_RiouxPaquette2014_4_time_series.csv", row.names = FALSE)

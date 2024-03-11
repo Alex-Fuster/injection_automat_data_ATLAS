@@ -17,7 +17,7 @@
 # In the first line describing the data, it is given the correspondence of each code of individuals, 
 # which are ordered this way: spawners 2002 - fry 2003 - spawners 2003 - fry 2004 - spawners 2004 - fry 2005 - Tadoussac hatchery breeders
 
-file_name <- "retrieved_datasets/33/33_MILOTEVA2012DATA_editedAF.txt"
+file_name <- "../retrieved_datasets/timeseries/33/33_MILOTEVA2012DATA_editedAF.txt"
 
 brut <- read.table(file_name)
 
@@ -112,7 +112,7 @@ taxa_obs <- taxa_obs |>
   dplyr::add_row(scientific_name = "Salmo salar", rank = "species") |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
-write.csv(taxa_obs, file = "output_tables/33_Milot2012/33_Milot2012_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/33_Milot2012/33_Milot2012_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -149,4 +149,4 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/33_Milot2012/33_Milot2012_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/33_Milot2012/33_Milot2012_time_series.csv", row.names = FALSE)

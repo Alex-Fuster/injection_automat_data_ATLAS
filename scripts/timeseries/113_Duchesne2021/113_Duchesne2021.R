@@ -12,7 +12,7 @@
 # - Effort d'échantillonnage: live-trapping sessions in two 11-ha trapping grids (one in mesic and one in wetland habitats)
 ###########################################################################
 
-file_name <- "retrieved_datasets/113/113_occurrence_nestingbirds.csv"
+file_name <- "../retrieved_datasets/timeseries/113/113_occurrence_nestingbirds.csv"
 
 brut <- read.csv(file_name, sep=",")
 
@@ -81,7 +81,7 @@ taxa_obs <- taxa_obs |>
   dplyr::mutate(scientific_name = stringr::str_to_sentence(scientific_name))
 
 
-write.csv(taxa_obs, file = "output_tables/113_Duchesne2021/113_Duchesne2021_taxa_obs.csv", row.names = FALSE)
+write.csv(taxa_obs, file = "../output_tables/timeseries/113_Duchesne2021/113_Duchesne2021_taxa_obs.csv", row.names = FALSE)
 
 #--------------------------------------------------------------------------
 # 4. Table public.time_series
@@ -118,4 +118,4 @@ time_series <- time_series |>
   dplyr::relocate(taxon, years, values, unit, geom) |>
   dplyr::glimpse()
 
-write.csv(time_series, file = "output_tables/113_Duchesne2021/113_Duchesne2021_time_series.csv", row.names = FALSE)
+write.csv(time_series, file = "../output_tables/timeseries/113_Duchesne2021/113_Duchesne2021_time_series.csv", row.names = FALSE)
